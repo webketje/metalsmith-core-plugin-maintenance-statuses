@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Metalsmith core plugin statuses</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Latest release</th>
+          <th>Released on</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plugin, release in plugins %}
+        <tr>
+          <td><a href="https://github.com/metalsmith/{{ plugin }}"><code>@metalsmith/{{ plugin }}</code></a></td>
+          <td><a href="{{ release.html_url }}"><code>{{ release.tag_name }}</code></a></td>
+          <td>{{ release.published_at }}</td>
+          <td><a href="#{{ plugin }}-details">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% for plugin, release in plugins %}
+    <div id="{{ plugin }}-details" class="plugin-details">
+      {{ release.body | safe }}
+    </div>
+    {% endfor %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js" integrity="sha512-LhccdVNGe2QMEfI3x4DVV3ckMRe36TfydKss6mJpdHjNFiV07dFpS2xzeZedptKZrwxfICJpez09iNioiSZ3hA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      var converter = new showdown.Converter();
+      var pluginDetails = Array.prototype.slice.call(document.querySelectorAll('.plugin-details'))
+      pluginDetails.forEach(function(detail) {
+        detail.innerHTML = converter.makeHtml(detail.innerHTML)
+      })
+
+
+      var rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr'))
+      var dates = rows.map(row => new Date(row.children[2].textContent))
+      rows.forEach(function(row, index) {
+        const monthsAgo6 = new Date()
+        monthsAgo6.setMonth(monthsAgo6.getMonth() - 6)
+        if (dates[index] <= monthsAgo6) row.children[2].style.backgroundColor = 'rgba(255, 0, 0, 0.3)'
+        if (!row.children[1].textContent.startsWith('v')) row.children[1].style.backgroundColor = 'rgba(255, 0, 0, 0.3)'
+        if (!pluginDetails[index].textContent.trim().length) row.children[3].style.backgroundColor = 'rgba(255, 0, 0, 0.3)'
+      })
+    </script>
+  </body>
+</html>

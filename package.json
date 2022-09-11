@@ -1,0 +1,22 @@
+{
+  "name": "plugin-statuses",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Van Lierde <kevin.van.lierde@gmail.com> (https://webketje.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "@metalsmith/layouts": "^2.6.0",
+    "@metalsmith/requests": "^0.2.1",
+    "jstransformer-nunjucks": "^1.1.0",
+    "metalsmith": "^2.5.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
